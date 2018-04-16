@@ -1,8 +1,12 @@
-﻿// Learn more about F# at http://fsharp.org
-
-open System
-
+﻿open FSharpPlus
+open FSharpPlus.Data
+ 
 [<EntryPoint>]
-let main argv =
-    printfn "Hello World from F#!"
-    0 // return an integer exit code
+let main argv = 
+    let a: OptionT<_> = monad {
+        let! x = async.Return (Some 1) |> OptionT
+        let! y = async.Return 2 |> liftAsync
+        return x + y
+    } 
+    
+    0
